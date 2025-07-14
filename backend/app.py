@@ -15,8 +15,8 @@ from datetime import datetime, timedelta
 import jwt
 
 # LOCAL FILE FROM REPO
-from cloudflareWorker import CloudflareWorker
-from pydantic_filters import UserRegister, UserLogin, QuestionRequest, CustomAIRequest, questionResponse, FileUploadResponse
+from lib.cloudflareWorker import CloudflareWorker
+from lib.pydantic_filters import UserRegister, UserLogin, QuestionRequest, CustomAIRequest, QuestionResponse, FileUploadResponse
 
 # Simple knowledge store that loads your RAG data
 class SimpleKnowledgeStore:
@@ -180,20 +180,6 @@ async def health_check():
         "fire_safety_chunks": len(fire_safety_store.chunks) if fire_safety_store else 0
     }
 
-@app.post("/auth/login")
-async def login_user(login_data: UserLogin):
-    if login_data.email not in users_db:
-        raise HTTPException(status_code=404, detail="User not found")
-    
-    user = users_db[login_data.email]
-    token = create_jwt_token(user)
-    
-    return {
-        "user": user,
-        "token": token,
-        "message": "Login successful"
-    }
-
 # File upload for custom AI
 # Chat endpoints for different models
 @app.post("/chat/fire-safety", response_model=QuestionResponse)
@@ -231,46 +217,6 @@ async def chat_general(request: QuestionRequest):
     
     try:
         response = await cloudflare_worker.query(request.question, system_prompt)
-        return QuestionResponse(answer=response, mode=request.mode, status="success")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
-
-@app.post("/chat/custom/{ai_id}", response_model=QuestionResponse)
-async def chat_custom_ai(
-    ai_id: str,
-    request: QuestionRequest,
-    current_user: dict = Depends(get_current_user)
-):
-    if not cloudflare_worker or not user_knowledge_manager:
-        raise HTTPException(status_code=503, detail="System not initialized")
-    
-    user_id = current_user["id"]
-    
-    # Find the AI
-    user_ai_list = user_ais.get(user_id, [])
-    ai_info = next((ai for ai in user_ai_list if ai["id"] == ai_id), None)
-    
-    if not ai_info:
-        raise HTTPException(status_code=404, detail="Custom AI not found")
-    
-    try:
-        # Get the knowledge store for this custom AI
-        custom_store = user_knowledge_manager.get_user_store(user_id, ai_id)
-        
-        # Search for relevant context
-        relevant_chunks = custom_store.search(request.question, limit=3)
-        context = "\n".join(relevant_chunks) if relevant_chunks else "No specific context found."
-        
-        system_prompt = f"""You are {ai_info['name']}, a custom AI assistant. {ai_info['description']}
-        Use the provided context from the uploaded knowledge base to answer questions accurately."""
-        
-        user_prompt = f"""Context: {context}
-
-Question: {request.question}
-
-Please provide a helpful answer based on the uploaded knowledge base."""
-        
-        response = await cloudflare_worker.query(user_prompt, system_prompt)
         return QuestionResponse(answer=response, mode=request.mode, status="success")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
