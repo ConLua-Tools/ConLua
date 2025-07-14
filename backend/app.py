@@ -2,7 +2,6 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, File, UploadFile, Form, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from pydantic import BaseModel, EmailStr
 import requests
 import json
 import os
@@ -15,7 +14,9 @@ from typing import List, Dict
 from datetime import datetime, timedelta
 import jwt
 
-from cloudflareWorker import CloudflareWorker # LOCAL FILE FROM REPO
+# LOCAL FILE FROM REPO
+from cloudflareWorker import CloudflareWorker
+from pydantic_filters import UserRegister, UserLogin, QuestionRequest, CustomAIRequest, questionResponse, FileUploadResponse
 
 # Simple knowledge store that loads your RAG data
 class SimpleKnowledgeStore:
@@ -113,32 +114,6 @@ fire_safety_store = None
 user_knowledge_manager = None
 users_db: Dict[str, dict] = {}
 user_ais: Dict[str, List[dict]] = {}
-
-# Pydantic models
-class UserRegister(BaseModel):
-    email: EmailStr
-    name: str
-
-class UserLogin(BaseModel):
-    email: EmailStr
-
-class QuestionRequest(BaseModel):
-    question: str
-    mode: str = "hybrid"
-
-class CustomAIRequest(BaseModel):
-    name: str
-    description: str
-
-class QuestionResponse(BaseModel):
-    answer: str
-    mode: str
-    status: str
-
-class FileUploadResponse(BaseModel):
-    filename: str
-    size: int
-    message: str
 
 # Initialize system
 # WE NEED TO FIX THIS
