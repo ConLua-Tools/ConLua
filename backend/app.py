@@ -7,17 +7,19 @@ import os
 import zipfile
 from pathlib import Path
 from typing import List, Dict
-
+from dotenv import load_dotenv
 
 # LOCAL FILE FROM REPO
 from lib.cloudflareWorker import CloudflareWorker
 from lib.pydantic_filters import UserRegister, UserLogin, QuestionRequest, CustomAIRequest, QuestionResponse, FileUploadResponse
 from lib.SimpleKnowledgeStore import SimpleKnowledgeStore
 
+load_dotenv(dotenv_path=Path(__file__).parent / '.env')
 # Configuration
 CLOUDFLARE_API_KEY = os.getenv("CLOUDFLARE_API_KEY", "INSERT API KEY")
 API_BASE_URL = os.getenv("CLOUDFLARE_API_BASE_URL", "INSERT YOUR API BASE URL")
 LLM_MODEL = os.getenv("LLM_MODEL", "INSERT YOUR LLM MODEL HERE")
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "INSERT YOUR EMBEDDING MODEL")
 WORKING_DIR = os.getenv("WORKING_DIR", "INSERT YOUR WORKING DIR")
 USER_DATA_DIR = os.getenv("USER_DATA_IDR", "INSERT YOUR USER DATA DIR HERE")
 JWT_SECRET = os.getenv("JWT_SECRET", "your-super-secret-jwt-key-change-this")
