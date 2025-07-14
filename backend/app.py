@@ -83,7 +83,6 @@ class SimpleKnowledgeStore:
         
         return results[:limit]
 
-
 # Configuration
 CLOUDFLARE_API_KEY = os.getenv("CLOUDFLARE_API_KEY", "INSERT API KEY")
 API_BASE_URL = os.getenv("CLOUDFLARE_API_BASE_URL", "INSERT YOUR API BASE URL")
@@ -172,6 +171,7 @@ def hash_email(email: str) -> str:
     return hashlib.md5(email.encode()).hexdigest()[:12]
 
 # Initialize system
+# WE NEED TO FIX THIS
 async def initialize_system():
     global cloudflare_worker, fire_safety_store, user_knowledge_manager
     
@@ -212,9 +212,6 @@ async def initialize_system():
             os.makedirs(WORKING_DIR, exist_ok=True)
     
     fire_safety_store = SimpleKnowledgeStore(WORKING_DIR)
-    
-    # Initialize user knowledge manager
-    user_knowledge_manager = MultiUserKnowledgeManager(USER_DATA_DIR)
     
     print("YourAI System ready!")
 
@@ -278,88 +275,6 @@ async def login_user(login_data: UserLogin):
     }
 
 # File upload for custom AI
-@app.post("/upload-files", response_model=List[FileUploadResponse])
-async def upload_files(
-    files: List[UploadFile] = File(...),
-    current_user: dict = Depends(get_current_user)
-):
-    user_id = current_user["id"]
-    user_upload_dir = Path(USER_DATA_DIR) / f"user_{user_id}" / "uploads"
-    user_upload_dir.mkdir(parents=True, exist_ok=True)
-    
-    uploaded_files = []
-    
-    for file in files:
-        if not file.filename:
-            continue
-        
-        # Validate file type
-        allowed_extensions = ['.txt', '.md', '.pdf', '.doc', '.docx']
-        file_ext = Path(file.filename).suffix.lower()
-        
-        if file_ext not in allowed_extensions:
-            raise HTTPException(
-                status_code=400,
-                detail=f"File type {file_ext} not supported. Allowed: {allowed_extensions}"
-            )
-        
-        # Save file
-        file_path = user_upload_dir / file.filename
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-        
-        uploaded_files.append(FileUploadResponse(
-            filename=file.filename,
-            size=file_path.stat().st_size,
-            message="Uploaded successfully"
-        ))
-    
-    return uploaded_files
-
-# Create custom AI
-@app.post("/create-custom-ai")
-async def create_custom_ai(
-    ai_data: CustomAIRequest,
-    current_user: dict = Depends(get_current_user)
-):
-    user_id = current_user["id"]
-    user_upload_dir = Path(USER_DATA_DIR) / f"user_{user_id}" / "uploads"
-    
-    if not user_upload_dir.exists() or not list(user_upload_dir.glob("*")):
-        raise HTTPException(status_code=400, detail="No files uploaded. Please upload knowledge files first.")
-    
-    # Get all uploaded files
-    uploaded_files = [str(f) for f in user_upload_dir.glob("*") if f.is_file()]
-    
-    # Create the custom AI
-    ai_id = user_knowledge_manager.create_custom_ai(user_id, ai_data.name, uploaded_files)
-    
-    # Store AI metadata
-    ai_info = {
-        "id": ai_id,
-        "name": ai_data.name,
-        "description": ai_data.description,
-        "created_at": datetime.now().isoformat(),
-        "files_count": len(uploaded_files)
-    }
-    
-    user_ais[user_id].append(ai_info)
-    
-    return {
-        "ai_id": ai_id,
-        "message": "Custom AI created successfully",
-        "ai_info": ai_info
-    }
-
-# Get user's custom AIs
-@app.get("/my-ais")
-async def get_user_ais(current_user: dict = Depends(get_current_user)):
-    user_id = current_user["id"]
-    return {
-        "ais": user_ais.get(user_id, []),
-        "count": len(user_ais.get(user_id, []))
-    }
-
 # Chat endpoints for different models
 @app.post("/chat/fire-safety", response_model=QuestionResponse)
 async def chat_fire_safety(request: QuestionRequest):
