@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from typing import List
 
 # Simple knowledge store that loads your RAG data
 class SimpleKnowledgeStore:
