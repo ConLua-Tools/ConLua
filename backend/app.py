@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, File, UploadFile, Form, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -216,9 +217,10 @@ async def initialize_system():
     print("YourAI System ready!")
 
 # API Endpoints
-@app.on_event("startup")
-async def startup_event():
-    await initialize_system()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await initialize_system()   # equivalent to startup
+    yield
 
 @app.get("/")
 async def root():
