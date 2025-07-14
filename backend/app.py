@@ -10,54 +10,11 @@ import hashlib
 import uuid
 import shutil
 from pathlib import Path
-from typing import List, Optional, Dict
-import asyncio
+from typing import List, Dict
 from datetime import datetime, timedelta
 import jwt
 
-# Simple CloudflareWorker (same as your original)
-class CloudflareWorker:
-    def __init__(self, cloudflare_api_key: str, api_base_url: str, llm_model_name: str):
-        self.cloudflare_api_key = cloudflare_api_key
-        self.api_base_url = api_base_url
-        self.llm_model_name = llm_model_name
-        self.max_tokens = 4080
-
-    async def _send_request(self, model_name: str, input_: dict):
-        headers = {"Authorization": f"Bearer {self.cloudflare_api_key}"}
-        
-        try:
-            response_raw = requests.post(
-                f"{self.api_base_url}{model_name}",
-                headers=headers,
-                json=input_,
-                timeout=30
-            ).json()
-            
-            result = response_raw.get("result", {})
-            
-            if "response" in result:
-                return result["response"]
-            
-            return "Error: No response from Cloudflare"
-        
-        except Exception as e:
-            print(f"Cloudflare API Error: {e}")
-            return f"Error: {e}"
-
-    async def query(self, prompt: str, system_prompt: str = '') -> str:
-        message = [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": prompt}
-        ]
-        
-        input_ = {
-            "messages": message,
-            "max_tokens": self.max_tokens,
-        }
-        
-        result = await self._send_request(self.llm_model_name, input_)
-        return result
+from cloudflareWorker import CloudflareWorker # LOCAL FILE FROM REPO
 
 # Simple knowledge store that loads your RAG data
 class SimpleKnowledgeStore:
@@ -126,71 +83,14 @@ class SimpleKnowledgeStore:
         
         return results[:limit]
 
-# Multi-user knowledge manager (simplified without LightRAG)
-class MultiUserKnowledgeManager:
-    def __init__(self, base_dir: str):
-        self.base_dir = Path(base_dir)
-        self.user_stores = {}
-    
-    def get_user_store(self, user_id: str, ai_id: str = "default") -> SimpleKnowledgeStore:
-        store_key = f"{user_id}_{ai_id}"
-        if store_key not in self.user_stores:
-            user_dir = self.base_dir / f"user_{user_id}" / f"ai_{ai_id}"
-            user_dir.mkdir(parents=True, exist_ok=True)
-            self.user_stores[store_key] = SimpleKnowledgeStore(str(user_dir))
-        return self.user_stores[store_key]
-    
-    def create_custom_ai(self, user_id: str, ai_name: str, uploaded_files: List[str]) -> str:
-        """Create a custom AI from uploaded files"""
-        ai_id = str(uuid.uuid4())
-        ai_dir = self.base_dir / f"user_{user_id}" / f"ai_{ai_id}"
-        ai_dir.mkdir(parents=True, exist_ok=True)
-        
-        # Process uploaded files into knowledge base
-        knowledge_chunks = []
-        for file_path in uploaded_files:
-            if Path(file_path).exists():
-                try:
-                    content = Path(file_path).read_text(encoding='utf-8', errors='ignore')
-                    # Simple chunking - split by paragraphs and sentences
-                    paragraphs = content.split('\n\n')
-                    for para in paragraphs:
-                        if para.strip():
-                            # Further split long paragraphs by sentences
-                            sentences = para.split('. ')
-                            if len(sentences) > 3:
-                                # Group sentences into chunks of 3
-                                for i in range(0, len(sentences), 3):
-                                    chunk = '. '.join(sentences[i:i+3])
-                                    if chunk.strip():
-                                        knowledge_chunks.append(chunk.strip())
-                            else:
-                                knowledge_chunks.append(para.strip())
-                except Exception as e:
-                    print(f"Error processing {file_path}: {e}")
-        
-        # Save processed knowledge
-        knowledge_file = ai_dir / "knowledge.json"
-        with open(knowledge_file, 'w', encoding='utf-8') as f:
-            json.dump({
-                "ai_id": ai_id,
-                "name": ai_name,
-                "chunks": knowledge_chunks,
-                "created_at": datetime.now().isoformat()
-            }, f, ensure_ascii=False, indent=2)
-        
-        # Create knowledge store for this AI
-        self.user_stores[f"{user_id}_{ai_id}"] = SimpleKnowledgeStore(str(ai_dir))
-        
-        return ai_id
 
 # Configuration
-CLOUDFLARE_API_KEY = os.getenv('CLOUDFLARE_API_KEY', 'lMbDDfHi887AK243ZUenm4dHV2nwEx2NSmX6xuq5')
-API_BASE_URL = "https://api.cloudflare.com/client/v4/accounts/07c4bcfbc1891c3e528e1c439fee68bd/ai/run/"
-LLM_MODEL = "@cf/meta/llama-3.2-3b-instruct"
-WORKING_DIR = "./dickens"
-USER_DATA_DIR = "./user_data"
-JWT_SECRET = os.getenv('JWT_SECRET', 'your-super-secret-jwt-key-change-this')
+CLOUDFLARE_API_KEY = os.getenv("CLOUDFLARE_API_KEY", "INSERT API KEY")
+API_BASE_URL = os.getenv("CLOUDFLARE_API_BASE_URL", "INSERT YOUR API BASE URL")
+LLM_MODEL = os.getenv("LLM_MODEL", "INSERT YOUR LLM MODEL HERE")
+WORKING_DIR = os.getenv("WORKING_DIR", "INSERT YOUR WORKING DIR")
+USER_DATA_DIR = os.getenv("USER_DATA_IDR", "INSERT YOUR USER DATA DIR HERE")
+JWT_SECRET = os.getenv("JWT_SECRET", "your-super-secret-jwt-key-change-this")
 
 # Initialize FastAPI
 app = FastAPI(title="YourAI Multi-Model API", version="2.0.0")
