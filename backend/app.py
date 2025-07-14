@@ -140,37 +140,6 @@ class FileUploadResponse(BaseModel):
     size: int
     message: str
 
-# Helper functions
-def create_jwt_token(user_data: dict) -> str:
-    payload = {
-        "user_id": user_data["id"],
-        "email": user_data["email"],
-        "exp": datetime.utcnow() + timedelta(days=7)
-    }
-    return jwt.encode(payload, JWT_SECRET, algorithm="HS256")
-
-def verify_jwt_token(token: str) -> dict:
-    try:
-        payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
-        return payload
-    except jwt.ExpiredSignatureError:
-        raise HTTPException(status_code=401, detail="Token expired")
-    except jwt.InvalidTokenError:
-        raise HTTPException(status_code=401, detail="Invalid token")
-
-def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
-    token = credentials.credentials
-    payload = verify_jwt_token(token)
-    user_id = payload["user_id"]
-    
-    if user_id not in [user["id"] for user in users_db.values()]:
-        raise HTTPException(status_code=401, detail="User not found")
-    
-    return next(user for user in users_db.values() if user["id"] == user_id)
-
-def hash_email(email: str) -> str:
-    return hashlib.md5(email.encode()).hexdigest()[:12]
-
 # Initialize system
 # WE NEED TO FIX THIS
 async def initialize_system():
@@ -234,32 +203,6 @@ async def health_check():
         "users_count": len(users_db),
         "active_custom_ais": sum(len(ais) for ais in user_ais.values()),
         "fire_safety_chunks": len(fire_safety_store.chunks) if fire_safety_store else 0
-    }
-
-# Authentication endpoints
-@app.post("/auth/register")
-async def register_user(user_data: UserRegister):
-    user_id = hash_email(user_data.email)
-    
-    if user_data.email in users_db:
-        raise HTTPException(status_code=400, detail="User already exists")
-    
-    user = {
-        "id": user_id,
-        "email": user_data.email,
-        "name": user_data.name,
-        "created_at": datetime.now().isoformat()
-    }
-    
-    users_db[user_data.email] = user
-    user_ais[user_id] = []
-    
-    token = create_jwt_token(user)
-    
-    return {
-        "user": user,
-        "token": token,
-        "message": "User registered successfully"
     }
 
 @app.post("/auth/login")
