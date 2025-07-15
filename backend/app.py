@@ -158,6 +158,17 @@ async def ask_question(request: QuestionRequest):
     """Legacy endpoint that routes to fire safety chat"""
     return await chat_fire_safety(request)
 
+@app.post("/upload_doc", response_model=FileUploadResponse)
+async def upload_file(file: UploadFile = File(...)):
+    file_content = await file.read()
+    file_size = len(file_content)
+
+    return FileUploadResponse(
+        filename=file.filename,
+        size=file_size,
+        message="File uploaded successfully."
+    )
+
 @app.get("/modes")
 async def get_available_modes():
     return {
