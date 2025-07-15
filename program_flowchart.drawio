@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:140.0) Gecko/20100101 Firefox/140.0" version="28.0.4">
   <diagram name="Page-1" id="p9O1bbmvmOPwoyHnhKzd">
-    <mxGraphModel dx="2244" dy="961" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1480" dy="1534" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -120,6 +120,33 @@
         </mxCell>
         <mxCell id="yUH72a4Vk7hPDRAozmCG-120" value="Output response graph database" style="rounded=1;whiteSpace=wrap;html=1;fontSize=15;fontStyle=0" vertex="1" parent="1">
           <mxGeometry x="1560" y="600" width="210" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="yUH72a4Vk7hPDRAozmCG-143" style="edgeStyle=none;shape=connector;rounded=0;jumpSize=4;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#000000;strokeWidth=4;align=center;verticalAlign=middle;fontFamily=Tahoma;fontSize=11;fontColor=default;labelBackgroundColor=default;startSize=6;endArrow=block;endFill=1;endSize=1;fillColor=#dae8fc;" edge="1" parent="1" source="yUH72a4Vk7hPDRAozmCG-141" target="yUH72a4Vk7hPDRAozmCG-142">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="yUH72a4Vk7hPDRAozmCG-141" value="Chuyển đổi văn bản thành cơ sở dữ liệu dạng biểu đồ" style="rounded=1;whiteSpace=wrap;html=1;fontSize=15;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="196" y="-1027" width="179" height="83" as="geometry" />
+        </mxCell>
+        <mxCell id="yUH72a4Vk7hPDRAozmCG-142" value="&lt;div&gt;- Giảm số token cần&lt;/div&gt;&lt;div&gt;- Giữ được chất lượng của câu trả lời&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=15;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="548" y="-1027" width="178" height="83" as="geometry" />
+        </mxCell>
+        <mxCell id="yUH72a4Vk7hPDRAozmCG-147" style="edgeStyle=none;shape=connector;rounded=0;jumpSize=4;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeColor=#000000;strokeWidth=4;align=center;verticalAlign=middle;fontFamily=Tahoma;fontSize=11;fontColor=default;labelBackgroundColor=default;startSize=6;endArrow=block;endFill=1;endSize=1;fillColor=#dae8fc;" edge="1" parent="1" source="yUH72a4Vk7hPDRAozmCG-145" target="yUH72a4Vk7hPDRAozmCG-146">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="yUH72a4Vk7hPDRAozmCG-145" value="Hỏi lại cơ sở dư liệu bằng phản hồi của AI" style="rounded=1;whiteSpace=wrap;html=1;fontSize=15;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="196" y="-914" width="179" height="83" as="geometry" />
+        </mxCell>
+        <mxCell id="yUH72a4Vk7hPDRAozmCG-146" value="Người dùng có thể đối chiếu phản hồi và tham khảo thêm" style="rounded=1;whiteSpace=wrap;html=1;fontSize=15;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="548" y="-914" width="178" height="83" as="geometry" />
+        </mxCell>
+        <mxCell id="yUH72a4Vk7hPDRAozmCG-150" style="edgeStyle=none;shape=connector;rounded=0;jumpSize=4;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#000000;strokeWidth=4;align=center;verticalAlign=middle;fontFamily=Tahoma;fontSize=11;fontColor=default;labelBackgroundColor=default;startSize=6;endArrow=block;endFill=1;endSize=1;fillColor=#dae8fc;" edge="1" parent="1" source="yUH72a4Vk7hPDRAozmCG-148" target="yUH72a4Vk7hPDRAozmCG-149">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="yUH72a4Vk7hPDRAozmCG-148" value="Tải văn bản cơ sở dữ liệu mới không giới hạn độ dài" style="rounded=1;whiteSpace=wrap;html=1;fontSize=15;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="196" y="-792" width="179" height="83" as="geometry" />
+        </mxCell>
+        <mxCell id="yUH72a4Vk7hPDRAozmCG-149" value="&lt;div&gt;- Cập nhật văn bản mới&lt;/div&gt;&lt;div&gt;- Văn bản toàn vẹn&amp;nbsp;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=15;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="548" y="-792" width="178" height="83" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
