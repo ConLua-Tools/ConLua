@@ -217,7 +217,7 @@
             const response = await fetch(`${API_BASE_URL}/ask`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ question: message, source: sourceDocument.value })
+                body: JSON.stringify({ question: message, mode: sourceDocument.value || "hybrid" })
             });
 
             const data = await response.json();
