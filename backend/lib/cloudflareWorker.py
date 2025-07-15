@@ -23,12 +23,15 @@ class CloudflareWorker:
             ).json()
 
             result = response_raw.get("result", {})
+            print(result)
+
+            if "data" in result: # Embedding case
+                print("Returned Embedding results")
+                return np.array(result["data"])
 
             if "response" in result:
+                print("Returned Query results")
                 return result["response"]
-
-            if "data" in result:  # Embedding case
-                return np.array(result["data"])
 
             return "Error: No response from Cloudflare"
 
