@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 from lib.cloudflareWorker import CloudflareWorker
 from lib.pydantic_filters import UserRegister, UserLogin, QuestionRequest, CustomAIRequest, QuestionResponse, FileUploadResponse
 from lib.SimpleKnowledgeStore import SimpleKnowledgeStore
+from lib.lightrag_extensions import MyLightRAG
 
 load_dotenv(dotenv_path=Path(__file__).parent / '.env')
 # Configuration
@@ -50,45 +51,45 @@ user_ais: Dict[str, List[dict]] = {}
 # WE NEED TO FIX THIS
 async def initialize_system():
     global cloudflare_worker, fire_safety_store, user_knowledge_manager
-    
+
     print("🔄 Initializing YourAI System...")
-    
+
     # Initialize Cloudflare worker
     cloudflare_worker = CloudflareWorker(
         cloudflare_api_key=CLOUDFLARE_API_KEY,
         api_base_url=API_BASE_URL,
         llm_model_name=LLM_MODEL,
     )
-    
+
     # Initialize fire safety knowledge store (from existing dickens data)
     dickens_path = Path(WORKING_DIR)
     has_data = dickens_path.exists() and len(list(dickens_path.glob("*.json"))) > 0
-    
+
     if not has_data:
         print("📥 Downloading RAG database...")
         try:
             # Use the same download logic as your original app.py
             data_url = "https://github.com/YOUR_USERNAME/fire-safety-ai/releases/download/v1.0-data/dickens.zip"
-            
+
             print(f"Downloading from: {data_url}")
             response = requests.get(data_url, timeout=60)
             response.raise_for_status()
-            
+
             with open("dickens.zip", "wb") as f:
                 f.write(response.content)
-            
+
             with zipfile.ZipFile("dickens.zip", 'r') as zip_ref:
                 zip_ref.extractall(".")
-            
+
             os.remove("dickens.zip")
             print("Data downloaded!")
-            
+
         except Exception as e:
             print(f"⚠️ Download failed: {e}")
             os.makedirs(WORKING_DIR, exist_ok=True)
-    
+
     fire_safety_store = SimpleKnowledgeStore(WORKING_DIR)
-    
+
     print("YourAI System ready!")
 
 # API Endpoints
@@ -117,23 +118,23 @@ async def health_check():
 async def chat_fire_safety(request: QuestionRequest):
     if not cloudflare_worker or not fire_safety_store:
         raise HTTPException(status_code=503, detail="System not initialized")
-    
+
     try:
         print(f"🔥 Fire Safety AI processing: {request.question}")
-        
+
         # Search for relevant context in fire safety knowledge
         relevant_chunks = fire_safety_store.search(request.question, limit=3)
         context = "\n".join(relevant_chunks) if relevant_chunks else "No specific context found."
-        
+
         system_prompt = """You are a Fire Safety AI Assistant specializing in fire safety regulations. 
         Use the provided context to answer questions about building codes, emergency exits, and fire safety requirements."""
-        
+
         user_prompt = f"""Context: {context}
 
 Question: {request.question}
 
 Please provide a helpful answer based on the context about fire safety regulations."""
-        
+
         response = await cloudflare_worker.query(user_prompt, system_prompt)
         return QuestionResponse(answer=response, mode=request.mode, status="success")
     except Exception as e:
@@ -143,9 +144,9 @@ Please provide a helpful answer based on the context about fire safety regulatio
 async def chat_general(request: QuestionRequest):
     if not cloudflare_worker:
         raise HTTPException(status_code=503, detail="System not initialized")
-    
+
     system_prompt = """You are a helpful general AI assistant. Provide accurate, helpful, and engaging responses to user questions."""
-    
+
     try:
         response = await cloudflare_worker.query(request.question, system_prompt)
         return QuestionResponse(answer=response, mode=request.mode, status="success")
@@ -171,6 +172,22 @@ async def upload_file(file: UploadFile = File(...)):
         size=file_size,
         message="File uploaded successfully."
     )
+
+@app.post("/upload_doc", response_model=FileUploadResponse)
+async def upload_file(file: UploadFile = File(...)):
+    file_content = await file.read()
+    file_size = len(file_content)
+
+    lightrag_instance = MyLightRAG()
+    await lightrag_instance.createKG(file_content)
+
+    return FileUploadResponse(
+        filename=file.filename,
+        size=file_size,
+        message="File uploaded successfully."
+    )
+
+
 
 @app.get("/modes")
 async def get_available_modes():
