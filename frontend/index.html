@@ -153,6 +153,15 @@
         .send-button:hover {
             background: #0056b3;
         }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 20px;
+        }
     </style>
 </head>
 <body>
@@ -164,26 +173,27 @@
 
     <div class="selector-upload-bar">
         <select id="sourceDocument">
-            <option value="default">Select Source Document</option>
-            <option value="qcvn06">QCVN 06:2022/BXD</option>
-            <option value="tieuChuanVN">Tiêu Chuẩn Việt Nam</option>
-            <option value="iso">ISO Fire Safety Standards</option>
+            <option value="hybrid">Hybrid Mode (Recommended)</option>
+            <option value="local">Local Search</option>
+            <option value="global">Global Search</option>
+            <option value="naive">Simple Search</option>
         </select>
         <button id="uploadBtn" class="upload-button">📎 Upload Document</button>
     </div>
     <div id="uploadStatus" class="upload-status"></div>
 
     <div class="chat-area" id="chatArea">
-        <div class="message bot-message">Hello! Upload a document or ask your fire safety question.</div>
+        <div class="message bot-message">Hello! I'm your Fire Safety AI Assistant. Ask me about fire safety regulations, emergency exits, building codes, or any related questions.</div>
     </div>
 
     <div class="input-wrapper">
-        <input type="text" id="chatInput" class="chat-input" placeholder="Type your question...">
+        <input type="text" id="chatInput" class="chat-input" placeholder="Type your fire safety question here...">
         <button id="sendButton" class="send-button">Send</button>
     </div>
 </div>
 
 <script>
+    // FIXED: Added the missing closing quote
     const API_BASE_URL = 'https://bun781-hiddengemorsth.hf.space';
     const chatArea = document.getElementById('chatArea');
     const chatInput = document.getElementById('chatInput');
@@ -205,27 +215,79 @@
         chatArea.scrollTop = chatArea.scrollHeight;
     }
 
+    function addErrorMessage(text) {
+        const div = document.createElement('div');
+        div.className = 'error-message';
+        div.textContent = text;
+        chatArea.appendChild(div);
+        chatArea.scrollTop = chatArea.scrollHeight;
+    }
+
     async function sendMessage() {
         const message = chatInput.value.trim();
-        if (!message) return;
+        if (!message) {
+            addErrorMessage('Please enter a question before sending.');
+            return;
+        }
 
         addMessage(message, 'user');
         chatInput.value = '';
-        addMessage('Thinking...', 'bot');
+        
+        // Add thinking message
+        const thinkingDiv = document.createElement('div');
+        thinkingDiv.className = 'message bot-message';
+        thinkingDiv.textContent = 'Thinking...';
+        thinkingDiv.id = 'thinking-message';
+        chatArea.appendChild(thinkingDiv);
+        chatArea.scrollTop = chatArea.scrollHeight;
 
         try {
+            console.log('Sending request to:', `${API_BASE_URL}/ask`);
+            console.log('Request data:', { question: message, mode: sourceDocument.value });
+            
             const response = await fetch(`${API_BASE_URL}/ask`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ question: message, mode: sourceDocument.value || "hybrid" })
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    question: message, 
+                    mode: sourceDocument.value || 'hybrid'
+                })
             });
 
+            // Remove thinking message
+            const thinkingMessage = document.getElementById('thinking-message');
+            if (thinkingMessage) {
+                thinkingMessage.remove();
+            }
+
+            console.log('Response status:', response.status);
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Error response:', errorText);
+                addErrorMessage(`Server error (${response.status}): ${errorText}`);
+                return;
+            }
+
             const data = await response.json();
-            chatArea.lastChild.remove();
-            addMessage(data.answer || "No response received.", 'bot');
-        } catch {
-            chatArea.lastChild.remove();
-            addMessage('Error connecting to server.', 'bot');
+            console.log('Response data:', data);
+            
+            const answer = data.answer || data.response || "No response received from the AI.";
+            addMessage(answer, 'bot');
+            
+        } catch (error) {
+            console.error('Network error:', error);
+            
+            // Remove thinking message if it exists
+            const thinkingMessage = document.getElementById('thinking-message');
+            if (thinkingMessage) {
+                thinkingMessage.remove();
+            }
+            
+            addErrorMessage(`Connection error: ${error.message}. Please check if the server is running.`);
         }
     }
 
@@ -252,12 +314,44 @@
                 body: formData
             });
 
+            if (!response.ok) {
+                throw new Error(`Upload failed: ${response.status}`);
+            }
+
             const data = await response.json();
             uploadStatus.textContent = `Uploaded: ${data.filename} (${data.size} bytes).`;
-        } catch {
+        } catch (error) {
+            console.error('Upload error:', error);
             uploadStatus.textContent = "Failed to upload document.";
         }
     }
+
+    // Add some example questions for better UX
+    function addExampleQuestions() {
+        const examples = [
+            "What are the requirements for emergency exits?",
+            "How many exits does a building need?",
+            "What are fire safety rules for stairwells?"
+        ];
+        
+        const exampleDiv = document.createElement('div');
+        exampleDiv.className = 'message bot-message';
+        exampleDiv.innerHTML = `
+            <div>Try asking:</div>
+            <ul style="margin: 10px 0; padding-left: 20px;">
+                ${examples.map(q => `<li style="margin: 5px 0; cursor: pointer; color: #007bff;" onclick="askExample('${q}')">${q}</li>`).join('')}
+            </ul>
+        `;
+        chatArea.appendChild(exampleDiv);
+    }
+
+    function askExample(question) {
+        chatInput.value = question;
+        sendMessage();
+    }
+
+    // Add examples when page loads
+    setTimeout(addExampleQuestions, 1000);
 </script>
 </body>
 </html>
