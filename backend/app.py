@@ -66,27 +66,8 @@ async def initialize_system():
     has_data = dickens_path.exists() and len(list(dickens_path.glob("*.json"))) > 0
 
     if not has_data:
-        print("📥 Downloading RAG database...")
-        try:
-            # Use the same download logic as your original app.py
-            data_url = "https://github.com/YOUR_USERNAME/fire-safety-ai/releases/download/v1.0-data/dickens.zip"
-
-            print(f"Downloading from: {data_url}")
-            response = requests.get(data_url, timeout=60)
-            response.raise_for_status()
-
-            with open("dickens.zip", "wb") as f:
-                f.write(response.content)
-
-            with zipfile.ZipFile("dickens.zip", 'r') as zip_ref:
-                zip_ref.extractall(".")
-
-            os.remove("dickens.zip")
-            print("Data downloaded!")
-
-        except Exception as e:
-            print(f"⚠️ Download failed: {e}")
-            os.makedirs(WORKING_DIR, exist_ok=True)
+        print(f"⚠️ Download failed: {e}")
+        os.makedirs(WORKING_DIR, exist_ok=True)
 
     fire_safety_store = SimpleKnowledgeStore(WORKING_DIR)
 
@@ -112,10 +93,10 @@ async def health_check():
         "fire_safety_chunks": len(fire_safety_store.chunks) if fire_safety_store else 0
     }
 
-# File upload for custom AI
-# Chat endpoints for different models
-@app.post("/chat/fire-safety", response_model=QuestionResponse)
-async def chat_fire_safety(request: QuestionRequest):
+# Legacy endpoints
+@app.post("/ask", response_model=QuestionResponse)
+async def ask_question(request: QuestionRequest):
+    """Legacy endpoint for fire safety questions"""
     if not cloudflare_worker or not fire_safety_store:
         raise HTTPException(status_code=503, detail="System not initialized")
 
@@ -140,25 +121,6 @@ Please provide a helpful answer based on the context about fire safety regulatio
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 
-@app.post("/chat/general", response_model=QuestionResponse)
-async def chat_general(request: QuestionRequest):
-    if not cloudflare_worker:
-        raise HTTPException(status_code=503, detail="System not initialized")
-
-    system_prompt = """You are a helpful general AI assistant. Provide accurate, helpful, and engaging responses to user questions."""
-
-    try:
-        response = await cloudflare_worker.query(request.question, system_prompt)
-        return QuestionResponse(answer=response, mode=request.mode, status="success")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
-
-# Legacy endpoints (for compatibility with your existing frontend)
-@app.post("/ask", response_model=QuestionResponse)
-async def ask_question(request: QuestionRequest):
-    """Legacy endpoint that routes to fire safety chat"""
-    return await chat_fire_safety(request)
-
 @app.post("/upload_doc", response_model=FileUploadResponse)
 async def upload_file(file: UploadFile = File(...)):
     file_content = await file.read()
@@ -172,22 +134,6 @@ async def upload_file(file: UploadFile = File(...)):
         size=file_size,
         message="File uploaded successfully."
     )
-
-@app.post("/upload_doc", response_model=FileUploadResponse)
-async def upload_file(file: UploadFile = File(...)):
-    file_content = await file.read()
-    file_size = len(file_content)
-
-    lightrag_instance = MyLightRAG()
-    await lightrag_instance.createKG(file_content)
-
-    return FileUploadResponse(
-        filename=file.filename,
-        size=file_size,
-        message="File uploaded successfully."
-    )
-
-
 
 @app.get("/modes")
 async def get_available_modes():
