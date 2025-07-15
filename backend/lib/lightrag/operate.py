@@ -1346,6 +1346,10 @@ async def extract_entities(
             **{**context_base, "input_text": content}
         )
 
+        continue_prompt = PROMPTS["entity_continue_extraction"].format(
+            **{**context_base, "input_text": content}
+        )
+
         final_result = await use_llm_func_with_cache(
             hint_prompt,
             use_llm_func,
