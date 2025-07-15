@@ -83,53 +83,186 @@ Output:
 ("content_keywords"{tuple_delimiter}"power dynamics, ideological conflict, discovery, rebellion"){completion_delimiter}
 #############################""",
     """Example 2:
-
-Entity_types: [company, index, commodity, market_trend, economic_policy, biological]
+    
+Entity_types: ["infrastructure", "building_type", "requirement"]
 Text:
 ```
-Stock markets faced a sharp downturn today as tech giants saw significant declines, with the Global Tech Index dropping by 3.4% in midday trading. Analysts attribute the selloff to investor concerns over rising interest rates and regulatory uncertainty.
-
-Among the hardest hit, Nexon Technologies saw its stock plummet by 7.8% after reporting lower-than-expected quarterly earnings. In contrast, Omega Energy posted a modest 2.1% gain, driven by rising oil prices.
-
-Meanwhile, commodity markets reflected a mixed sentiment. Gold futures rose by 1.5%, reaching $2,080 per ounce, as investors sought safe-haven assets. Crude oil prices continued their rally, climbing to $87.60 per barrel, supported by supply constraints and strong demand.
-
-Financial experts are closely watching the Federal Reserve's next move, as speculation grows over potential rate hikes. The upcoming policy announcement is expected to influence investor confidence and overall market stability.
+3.2.1 	Các lối ra được coi là lối ra thoát nạn nếu chúng:
+a) Dẫn từ các gian phòng ở tầng 1 ra ngoài theo một trong những cách sau:
+- Ra ngoài trực tiếp;
+- Qua hành lang;
+- Qua tiền sảnh (hay phòng chờ);
+- Qua buồng thang bộ;
+- Qua hành lang và tiền sảnh (hay phòng chờ);
+- Qua hành lang và buồng thang bộ.
+b) Dẫn từ các gian phòng của tầng bất kỳ, trừ tầng 1, vào một trong các nơi sau:
+- Trực tiếp vào buồng thang bộ hay tới cầu thang bộ loại 3;
+- Vào hành lang dẫn trực tiếp vào buồng thang bộ hay tới cầu thang bộ loại 3;
+- Vào phòng sử dụng chung (hay phòng chờ) có lối ra trực tiếp dẫn vào buồng thang bộ hoặc tới cầu thang bộ loại 3;
+- Vào hành lang bên của nhà có chiều cao PCCC dưới 28 m dẫn trực tiếp vào cầu thang bộ loại 2;
+- Ra mái có khai thác sử dụng, hoặc ra một khu vực riêng của mái dẫn tới cầu thang bộ loại 3.
+c) Dẫn vào gian phòng liền kề (trừ gian phòng nhóm F5 hạng A hoặc B) trên cùng tầng mà từ gian phòng này có các lối ra như được nêu tại 3.2.1 a, b). Lối ra dẫn vào gian phòng hạng A hoặc B được phép coi là lối ra thoát nạn nếu nó dẫn từ gian phòng kỹ thuật không có người làm việc thường xuyên mà chỉ dùng để phục vụ các gian phòng hạng A hoặc B nêu trên.
+d) Các lối ra đáp ứng quy định tại 3.2.2 và các lối ra thoát nạn khác được quy định cụ thể trong quy chuẩn này.
+CHÚ THÍCH: 	Trong trường hợp sử dụng cầu thang bộ loại 3 để thoát nạn cần có tính toán thoát nạn phù hợp với Phụ lục G. 
+3.2.2 	Các lối ra từ các tầng hầm và tầng nửa hầm, về nguyên tắc, là lối ra thoát nạn khi chúng thoát trực tiếp ra ngoài và được ngăn cách với các buồng thang bộ chung của nhà (xem Hình I.1, Phụ lục I).
+Các lối ra sau đây cũng được coi là lối ra thoát nạn:
+a) Các lối ra từ các tầng hầm đi qua các buồng thang bộ chung có lối đi riêng ra bên ngoài được ngăn cách với phần còn lại của buồng thang bộ bằng vách đặc ngăn cháy loại 1 (xem Hình I.2, Phụ lục I);
+b) Các lối ra từ các tầng hầm và tầng nửa hầm có bố trí các gian phòng hạng C1 đến C4, D, E, đi vào các gian phòng hạng C1 đến C4, D, E và vào tiền sảnh nằm trên tầng một của nhà nhóm F5;
+c) Các lối ra từ phòng chờ, phòng gửi đồ, phòng hút thuốc và phòng vệ sinh ở các tầng hầm hoặc tầng nửa hầm của nhà nhóm F2, F3 và F4 đi vào tiền sảnh của tầng 1 theo các cầu thang bộ riêng loại 2. Trong trường hợp này thì phải bảo đảm các yêu cầu sau:
+- Tiền sảnh phải được ngăn cách với các hành lang và gian phòng lân cận bằng các vách ngăn cháy không nhỏ hơn loại 1;
+- Các gian phòng tầng 1 và các tầng trên phải có đường thoát nạn không đi qua tiền sảnh này (trừ các gian phòng nằm trong tiền sảnh);
+- Vật liệu hoàn thiện các phòng chờ, phòng gửi đồ, phòng hút thuốc và phòng vệ sinh ở các tầng hầm hoặc tầng nửa hầm phải thỏa mãn yêu cầu đối với các gian phòng chung theo Phụ lục B;
+- Phòng gửi đồ phải có số lối ra thoát nạn thỏa mãn yêu cầu của quy chuẩn này, không tính lối ra thoát nạn theo cầu thang bộ loại 2 nêu trên.
+d) Các cửa mở quay có bản lề trên cửa ra vào dành cho phương tiện vận tải đường sắt hoặc đường bộ.
+Cho phép bố trí khoang đệm tại lối ra ngoài trực tiếp từ nhà, từ tầng hầm và tầng nửa hầm.
+3.2.3 	Các lối ra không được coi là lối ra thoát nạn nếu trên lối ra này có đặt cửa có cánh mở kiểu trượt hoặc xếp, cửa cuốn, cửa quay.
+Các cửa đi có cánh mở ra (cửa bản lề) nằm trong các cửa nói trên được coi là lối ra thoát nạn nếu được thiết kế theo đúng yêu cầu quy định.
+3.2.4 	Số lượng và chiều rộng của các lối ra thoát nạn từ các gian phòng, các tầng và các nhà được xác định theo số lượng người thoát nạn lớn nhất có thể đi qua chúng và khoảng cách giới hạn cho phép từ chỗ xa nhất có thể có người (sinh hoạt, làm việc) tới lối ra thoát nạn gần nhất. 
+CHÚ THÍCH 1: 	Số lượng người thoát nạn lớn nhất từ các không gian khác nhau của nhà hoặc phần nhà được xác định theo G.3, Phụ lục G.
+CHÚ THÍCH 2: 	Ngoài các yêu cầu chung được nêu trong quy chuẩn này, yêu cầu cụ thể về số lượng và chiều rộng của các lối ra thoát nạn được nêu trong tài liệu chuẩn cho từng loại công trình. Phụ lục G nêu một số quy định cụ thể cho các nhóm nhà thường gặp.
+Các phần nhà có công năng khác nhau và được ngăn chia bởi các bộ phận ngăn cháy thì phải có các lối ra thoát nạn độc lập, trừ các trường hợp được quy định cụ thể trong quy chuẩn này. 
+Các phần nhà có công năng khác nhau và được ngăn chia bởi các bộ phận ngăn cháy thành các khoang cháy trong nhà có nhiều công năng phải có các lối ra thoát nạn riêng từ mỗi tầng. Cho phép không quá 50% lối ra thoát nạn dẫn vào khoang cháy lân cận (trừ lối ra thoát nạn dẫn vào khoang cháy nhóm F5). Riêng phần nhà nhóm F5 phải có lối ra thoát nạn riêng.
+3.2.5 	Các gian phòng sau phải có không ít hơn hai lối ra thoát nạn:
+a) Các gian phòng nhóm F1.1 có mặt đồng thời hơn 15 người;
+b) Các gian phòng trong các tầng hầm và tầng nửa hầm có mặt đồng thời hơn 15 người; riêng các gian phòng trong tầng hầm và tầng nửa hầm có từ 6 đến 15 người có mặt đồng thời thì cho phép một trong hai lối ra là lối ra khẩn cấp theo các yêu cầu tại đoạn d) của 3.2.13; 
+c) Các gian phòng có mặt đồng thời từ 50 người trở lên;
+d) Các gian phòng (trừ các gian phòng nhóm F5) có mặt đồng thời dưới 50 người (bao gồm cả tầng khán giả ở trên cao hoặc ban công khán phòng) với khoảng cách dọc theo lối đi từ chỗ xa nhất có người đến lối ra thoát nạn vượt quá 25 m. Khi có các lối thoát nạn thông vào gian phòng đang xét từ các gian phòng bên cạnh với số lượng trên 5 người có mặt ở mỗi phòng bên cạnh, thì khoảng cách trên phải bao gồm độ dài đường thoát nạn cho người từ các gian phòng bên cạnh đó;
+e) Các gian phòng có tổng số người có mặt trong đó và trong các gian liền kề có lối thoát nạn chỉ đi vào gian phòng đang xét từ 50 người trở lên;
+f) Các gian phòng nhóm F5 hạng A hoặc B có số người làm việc trong ca đông nhất lớn hơn 5 người, hạng C - khi số người làm việc trong ca đông nhất lớn hơn 25 người hoặc có diện tích lớn hơn 1 000 m2;
+g) Các sàn công tác hở và các sàn dành cho người vận hành và bảo dưỡng thiết bị trong các gian phòng nhóm F5 có diện tích lớn hơn 100 m2 - đối với các gian phòng thuộc hạng A và B hoặc lớn hơn 400 m2 - đối với các gian phòng thuộc các hạng khác.
+Nếu gian phòng phải có từ 2 lối ra thoát nạn trở lên thì cho phép bố trí không quá 50% số lượng lối ra thoát nạn của gian phòng đó đi qua một gian phòng liền kề, với điều kiện gian phòng liền kề đó cũng phải có lối ra thoát nạn tuân thủ quy định của quy chuẩn này và các tài liệu chuẩn tương ứng cho gian phòng đó.
 ```
 
 Output:
-("entity"{tuple_delimiter}"Global Tech Index"{tuple_delimiter}"index"{tuple_delimiter}"The Global Tech Index tracks the performance of major technology stocks and experienced a 3.4% decline today."){record_delimiter}
-("entity"{tuple_delimiter}"Nexon Technologies"{tuple_delimiter}"company"{tuple_delimiter}"Nexon Technologies is a tech company that saw its stock decline by 7.8% after disappointing earnings."){record_delimiter}
-("entity"{tuple_delimiter}"Omega Energy"{tuple_delimiter}"company"{tuple_delimiter}"Omega Energy is an energy company that gained 2.1% in stock value due to rising oil prices."){record_delimiter}
-("entity"{tuple_delimiter}"Gold Futures"{tuple_delimiter}"commodity"{tuple_delimiter}"Gold futures rose by 1.5%, indicating increased investor interest in safe-haven assets."){record_delimiter}
-("entity"{tuple_delimiter}"Crude Oil"{tuple_delimiter}"commodity"{tuple_delimiter}"Crude oil prices rose to $87.60 per barrel due to supply constraints and strong demand."){record_delimiter}
-("entity"{tuple_delimiter}"Market Selloff"{tuple_delimiter}"market_trend"{tuple_delimiter}"Market selloff refers to the significant decline in stock values due to investor concerns over interest rates and regulations."){record_delimiter}
-("entity"{tuple_delimiter}"Federal Reserve Policy Announcement"{tuple_delimiter}"economic_policy"{tuple_delimiter}"The Federal Reserve's upcoming policy announcement is expected to impact investor confidence and market stability."){record_delimiter}
-("relationship"{tuple_delimiter}"Global Tech Index"{tuple_delimiter}"Market Selloff"{tuple_delimiter}"The decline in the Global Tech Index is part of the broader market selloff driven by investor concerns."{tuple_delimiter}"market performance, investor sentiment"{tuple_delimiter}9){record_delimiter}
-("relationship"{tuple_delimiter}"Nexon Technologies"{tuple_delimiter}"Global Tech Index"{tuple_delimiter}"Nexon Technologies' stock decline contributed to the overall drop in the Global Tech Index."{tuple_delimiter}"company impact, index movement"{tuple_delimiter}8){record_delimiter}
-("relationship"{tuple_delimiter}"Gold Futures"{tuple_delimiter}"Market Selloff"{tuple_delimiter}"Gold prices rose as investors sought safe-haven assets during the market selloff."{tuple_delimiter}"market reaction, safe-haven investment"{tuple_delimiter}10){record_delimiter}
-("relationship"{tuple_delimiter}"Federal Reserve Policy Announcement"{tuple_delimiter}"Market Selloff"{tuple_delimiter}"Speculation over Federal Reserve policy changes contributed to market volatility and investor selloff."{tuple_delimiter}"interest rate impact, financial regulation"{tuple_delimiter}7){record_delimiter}
-("content_keywords"{tuple_delimiter}"market downturn, investor sentiment, commodities, Federal Reserve, stock performance"){completion_delimiter}
+("entity"::{tuple_delimiter}"Lối ra thoát nạn"::{tuple_delimiter}"infrastructure"::{tuple_delimiter}"Lối ra thoát nạn là các lối ra từ gian phòng hoặc tầng trong nhà, dẫn đến nơi an toàn bên ngoài khi xảy ra cháy, được quy định rõ trong QCVN 06:2022/BXD."){record_delimiter}
+("entity"::{tuple_delimiter}"Lối ra khẩn cấp"::{tuple_delimiter}"infrastructure"::{tuple_delimiter}"Lối ra khẩn cấp là các lối ra phụ, không được đưa vào tính toán thoát nạn chính thức nhưng giúp tăng cường an toàn khi cháy."){record_delimiter}
+("entity"::{tuple_delimiter}"Cầu thang bộ loại 2"::{tuple_delimiter}"infrastructure"::{tuple_delimiter}"Cầu thang bộ loại 2 là dạng cầu thang bộ chuyên dụng được phép sử dụng thay cho buồng thang bộ trong một số trường hợp đảm bảo an toàn cháy."){record_delimiter}
+("entity"::{tuple_delimiter}"Cầu thang bộ loại 3"::{tuple_delimiter}"infrastructure"::{tuple_delimiter}"Cầu thang bộ loại 3 là dạng cầu thang chuyên dụng được chấp nhận trong các điều kiện thiết kế thoát nạn từ tầng trên, mái hoặc khu vực kỹ thuật."){record_delimiter}
+("entity"::{tuple_delimiter}"Buồng thang bộ"::{tuple_delimiter}"infrastructure"::{tuple_delimiter}"Buồng thang bộ là khu vực cầu thang được sử dụng làm tuyến thoát nạn chính, kết nối các tầng với lối ra ngoài."){record_delimiter}
+("entity"::{tuple_delimiter}"Vách ngăn cháy loại 1"::{tuple_delimiter}"infrastructure"::{tuple_delimiter}"Vách ngăn cháy loại 1 được sử dụng để ngăn cách buồng thang bộ với các lối ra từ tầng hầm nhằm đảm bảo chống cháy lan."){record_delimiter}
+("entity"::{tuple_delimiter}"Khoang đệm"::{tuple_delimiter}"infrastructure"::{tuple_delimiter}"Khoang đệm là khu vực đệm tại các lối ra ngoài trực tiếp từ tầng hầm hoặc nhà nhằm ngăn khói và bảo vệ lối thoát nạn."){record_delimiter}
+("entity"::{tuple_delimiter}"Nhà nhóm F5"::{tuple_delimiter}"building_type"::{tuple_delimiter}"Nhà nhóm F5 là loại công trình có công năng đặc biệt, yêu cầu lối ra thoát nạn riêng biệt."){record_delimiter}
+("entity"::{tuple_delimiter}"Yêu cầu số lượng lối ra"::{tuple_delimiter}"requirement"::{tuple_delimiter}"Số lượng lối ra thoát nạn tối thiểu được xác định dựa trên số lượng người sử dụng không gian, chức năng công năng và tầng nhà."){record_delimiter}
+("entity"::{tuple_delimiter}"Yêu cầu chiều rộng lối ra"::{tuple_delimiter}"requirement"::{tuple_delimiter}"Chiều rộng tối thiểu của lối ra thoát nạn được quy định dựa trên loại không gian, số người thoát nạn và chiều cao nhà."){record_delimiter}
+("relationship"::{tuple_delimiter}"Lối ra thoát nạn"::{tuple_delimiter}"Cầu thang bộ loại 3"::{tuple_delimiter}"Lối ra thoát nạn có thể dẫn trực tiếp đến cầu thang bộ loại 3 trong các tầng trên hoặc khu vực mái."::{tuple_delimiter}"tuyến thoát nạn, kết nối tầng"::{tuple_delimiter}8){record_delimiter}
+("relationship"::{tuple_delimiter}"Lối ra từ tầng hầm"::{tuple_delimiter}"Vách ngăn cháy loại 1"::{tuple_delimiter}"Lối ra từ tầng hầm đi qua buồng thang bộ chung phải được ngăn cách bằng vách ngăn cháy loại 1 để đảm bảo an toàn cháy."::{tuple_delimiter}"chống cháy lan, ngăn cách an toàn"::{tuple_delimiter}9){record_delimiter}
+("relationship"::{tuple_delimiter}"Lối ra thoát nạn"::{tuple_delimiter}"Khoang đệm"::{tuple_delimiter}"Cho phép bố trí khoang đệm tại các lối ra ngoài trực tiếp để tăng cường ngăn khói và bảo vệ người di chuyển thoát nạn."::{tuple_delimiter}"ngăn khói, bảo vệ tuyến thoát hiểm"::{tuple_delimiter}7){record_delimiter}
+("relationship"::{tuple_delimiter}"Yêu cầu số lượng lối ra"::{tuple_delimiter}"Số người trong gian phòng"::{tuple_delimiter}"Số lượng lối ra thoát nạn yêu cầu được xác định theo tổng số người có mặt đồng thời trong gian phòng."::{tuple_delimiter}"yêu cầu thiết kế, an toàn thoát hiểm"::{tuple_delimiter}9){record_delimiter}
+("relationship"::{tuple_delimiter}"Nhà nhóm F5"::{tuple_delimiter}"Lối ra thoát nạn riêng"::{tuple_delimiter}"Nhà nhóm F5 yêu cầu các lối ra thoát nạn riêng biệt, không được chia sẻ với phần nhà khác."::{tuple_delimiter}"bố trí riêng biệt, an toàn công năng đặc biệt"::{tuple_delimiter}8){record_delimiter}
+("content_keywords"::{tuple_delimiter}"lối ra thoát nạn, lối ra khẩn cấp, cầu thang bộ, khoang đệm, vách ngăn cháy, yêu cầu số lượng lối ra, quy định chiều rộng lối ra"){completion_delimiter}
 #############################""",
     """Example 3:
 
-Entity_types: [economic_policy, athlete, event, location, record, organization, equipment]
+Entity_types: ["fire_resistance_level", "hazard_class", "hazard_level", "volume_threshold", "flow_rate"]
 Text:
 ```
-At the World Athletics Championship in Tokyo, Noah Carter broke the 100m sprint record using cutting-edge carbon-fiber spikes.
+Bậc chịu lửa I, II
+
+    Hạng A, B, C
+
+        Cấp nguy hiểm S0, S1
+
+            ≤150 m³: 2 × 2.5 L/s
+
+                150 m³: 3 × 2.5 L/s
+
+    Hạng D, E
+
+        Không quy định cấp nguy hiểm kết cấu
+
+            ≤150 m³: 1 × 2.5 L/s
+
+                150 m³: 1 × 2.5 L/s
+
+Bậc chịu lửa III
+
+    Hạng A, B, C
+
+        Cấp nguy hiểm S0
+
+            ≤150 m³: 2 × 2.5 L/s
+
+                150 m³: 3 × 2.5 L/s
+
+    Hạng D, E
+
+        Cấp nguy hiểm S0, S1
+
+            ≤150 m³: 1 × 2.5 L/s
+
+                150 m³: 2 × 2.5 L/s
+
+Bậc chịu lửa IV
+
+    Hạng A, B
+
+        Cấp nguy hiểm S0
+
+            ≤150 m³: 2 × 2.5 L/s
+
+                150 m³: 3 × 2.5 L/s
+
+    Hạng C
+
+        Cấp nguy hiểm S0, S1
+
+            ≤150 m³: 2 × 2.5 L/s
+
+                150 m³: 2 × 5 L/s
+
+        Cấp nguy hiểm S2, S3
+
+            ≤150 m³: 3 × 2.5 L/s
+
+                150 m³: 4 × 2.5 L/s
+
+    Hạng D, E
+
+        Cấp nguy hiểm S0, S1, S2, S3
+
+            ≤150 m³: 1 × 2.5 L/s
+
+                150 m³: 2 × 2.5 L/s
+
+Bậc chịu lửa V
+
+    Hạng C
+
+        Không quy định cấp nguy hiểm kết cấu
+
+            ≤150 m³: 2 × 2.5 L/s
+
+                150 m³: 2 × 5 L/s
+
+    Hạng D, E
+
+        Không quy định cấp nguy hiểm kết cấu
+
+            ≤150 m³: 1 × 2.5 L/s
+
+                150 m³: 2 × 2.5 L/s
 ```
 
 Output:
-("entity"{tuple_delimiter}"World Athletics Championship"{tuple_delimiter}"event"{tuple_delimiter}"The World Athletics Championship is a global sports competition featuring top athletes in track and field."){record_delimiter}
-("entity"{tuple_delimiter}"Tokyo"{tuple_delimiter}"location"{tuple_delimiter}"Tokyo is the host city of the World Athletics Championship."){record_delimiter}
-("entity"{tuple_delimiter}"Noah Carter"{tuple_delimiter}"athlete"{tuple_delimiter}"Noah Carter is a sprinter who set a new record in the 100m sprint at the World Athletics Championship."){record_delimiter}
-("entity"{tuple_delimiter}"100m Sprint Record"{tuple_delimiter}"record"{tuple_delimiter}"The 100m sprint record is a benchmark in athletics, recently broken by Noah Carter."){record_delimiter}
-("entity"{tuple_delimiter}"Carbon-Fiber Spikes"{tuple_delimiter}"equipment"{tuple_delimiter}"Carbon-fiber spikes are advanced sprinting shoes that provide enhanced speed and traction."){record_delimiter}
-("entity"{tuple_delimiter}"World Athletics Federation"{tuple_delimiter}"organization"{tuple_delimiter}"The World Athletics Federation is the governing body overseeing the World Athletics Championship and record validations."){record_delimiter}
-("relationship"{tuple_delimiter}"World Athletics Championship"{tuple_delimiter}"Tokyo"{tuple_delimiter}"The World Athletics Championship is being hosted in Tokyo."{tuple_delimiter}"event location, international competition"{tuple_delimiter}8){record_delimiter}
-("relationship"{tuple_delimiter}"Noah Carter"{tuple_delimiter}"100m Sprint Record"{tuple_delimiter}"Noah Carter set a new 100m sprint record at the championship."{tuple_delimiter}"athlete achievement, record-breaking"{tuple_delimiter}10){record_delimiter}
-("relationship"{tuple_delimiter}"Noah Carter"{tuple_delimiter}"Carbon-Fiber Spikes"{tuple_delimiter}"Noah Carter used carbon-fiber spikes to enhance performance during the race."{tuple_delimiter}"athletic equipment, performance boost"{tuple_delimiter}7){record_delimiter}
-("relationship"{tuple_delimiter}"World Athletics Federation"{tuple_delimiter}"100m Sprint Record"{tuple_delimiter}"The World Athletics Federation is responsible for validating and recognizing new sprint records."{tuple_delimiter}"sports regulation, record certification"{tuple_delimiter}9){record_delimiter}
-("content_keywords"{tuple_delimiter}"athletics, sprinting, record-breaking, sports technology, competition"){completion_delimiter}
+("entity"::{tuple_delimiter}"Bậc chịu lửa I, II"::{tuple_delimiter}"fire_resistance_level"::{tuple_delimiter}"Bậc chịu lửa I, II là cấp độ chịu lửa cao nhất, yêu cầu các tiêu chuẩn nghiêm ngặt về khả năng chống cháy cho kết cấu công trình."){record_delimiter}
+("entity"::{tuple_delimiter}"Bậc chịu lửa III"::{tuple_delimiter}"fire_resistance_level"::{tuple_delimiter}"Bậc chịu lửa III là cấp độ chịu lửa trung bình, áp dụng cho công trình có yêu cầu chống cháy tiêu chuẩn."){record_delimiter}
+("entity"::{tuple_delimiter}"Bậc chịu lửa IV"::{tuple_delimiter}"fire_resistance_level"::{tuple_delimiter}"Bậc chịu lửa IV là cấp chịu lửa thấp hơn, áp dụng cho công trình có nguy cơ cháy trung bình."){record_delimiter}
+("entity"::{tuple_delimiter}"Bậc chịu lửa V"::{tuple_delimiter}"fire_resistance_level"::{tuple_delimiter}"Bậc chịu lửa V là cấp chịu lửa thấp nhất, áp dụng cho công trình nhỏ và ít nguy cơ cháy."){record_delimiter}
+("entity"::{tuple_delimiter}"Hạng A, B, C"::{tuple_delimiter}"hazard_class"::{tuple_delimiter}"Hạng A, B, C là phân loại nguy hiểm cháy cao, yêu cầu tiêu chuẩn chữa cháy nghiêm ngặt."){record_delimiter}
+("entity"::{tuple_delimiter}"Hạng D, E"::{tuple_delimiter}"hazard_class"::{tuple_delimiter}"Hạng D, E là phân loại nguy hiểm cháy thấp, áp dụng cho các công trình có nguy cơ cháy thấp hơn."){record_delimiter}
+("entity"::{tuple_delimiter}"Hạng C"::{tuple_delimiter}"hazard_class"::{tuple_delimiter}"Hạng C là phân loại trung gian giữa nhóm nguy hiểm cao và thấp."){record_delimiter}
+("entity"::{tuple_delimiter}"Cấp nguy hiểm S0, S1, S2, S3"::{tuple_delimiter}"hazard_level"::{tuple_delimiter}"Cấp nguy hiểm S0, S1, S2, S3 là các mức độ nguy hiểm kết cấu, với S0 là nguy hiểm thấp nhất và S3 là cao nhất."){record_delimiter}
+("entity"::{tuple_delimiter}"≤150 m³"::{tuple_delimiter}"volume_threshold"::{tuple_delimiter}"Thể tích không gian nhỏ hơn hoặc bằng 150 m³ được sử dụng làm ngưỡng áp dụng yêu cầu lưu lượng chữa cháy."){record_delimiter}
+("entity"::{tuple_delimiter}"150 m³"::{tuple_delimiter}"volume_threshold"::{tuple_delimiter}"Thể tích không gian lớn hơn 150 m³ được dùng để áp dụng yêu cầu lưu lượng chữa cháy cao hơn."){record_delimiter}
+("entity"::{tuple_delimiter}"2 × 2.5 L/s"::{tuple_delimiter}"flow_rate"::{tuple_delimiter}"Yêu cầu cung cấp 2 vòi chữa cháy, mỗi vòi 2.5 lít mỗi giây."){record_delimiter}
+("entity"::{tuple_delimiter}"3 × 2.5 L/s"::{tuple_delimiter}"flow_rate"::{tuple_delimiter}"Yêu cầu cung cấp 3 vòi chữa cháy, mỗi vòi 2.5 lít mỗi giây."){record_delimiter}
+("entity"::{tuple_delimiter}"2 × 5 L/s"::{tuple_delimiter}"flow_rate"::{tuple_delimiter}"Yêu cầu cung cấp 2 vòi chữa cháy, mỗi vòi 5 lít mỗi giây."){record_delimiter}
+("entity"::{tuple_delimiter}"4 × 2.5 L/s"::{tuple_delimiter}"flow_rate"::{tuple_delimiter}"Yêu cầu cung cấp 4 vòi chữa cháy, mỗi vòi 2.5 lít mỗi giây."){record_delimiter}
+("relationship"::{tuple_delimiter}"Bậc chịu lửa I, II"::{tuple_delimiter}"≤150 m³"::{tuple_delimiter}"Đối với bậc chịu lửa I, II và thể tích nhỏ hơn hoặc bằng 150 m³, áp dụng các yêu cầu lưu lượng theo phân hạng và cấp nguy hiểm."::{tuple_delimiter}"quy chuẩn chữa cháy, phân loại thể tích"::{tuple_delimiter}9){record_delimiter}
+("relationship"::{tuple_delimiter}"Cấp nguy hiểm S0, S1"::{tuple_delimiter}"2 × 2.5 L/s"::{tuple_delimiter}"Cấp nguy hiểm S0, S1 yêu cầu sử dụng 2 vòi chữa cháy 2.5 L/s cho không gian ≤150 m³."::{tuple_delimiter}"yêu cầu kỹ thuật, lưu lượng nước"::{tuple_delimiter}8){record_delimiter}
+("relationship"::{tuple_delimiter}"Cấp nguy hiểm S0, S1"::{tuple_delimiter}"3 × 2.5 L/s"::{tuple_delimiter}"Cấp nguy hiểm S0, S1 yêu cầu sử dụng 3 vòi chữa cháy 2.5 L/s khi thể tích >150 m³."::{tuple_delimiter}"tăng lưu lượng, phân loại nguy hiểm"::{tuple_delimiter}8){record_delimiter}
+("relationship"::{tuple_delimiter}"Hạng D, E"::{tuple_delimiter}"≤150 m³"::{tuple_delimiter}"Hạng D, E áp dụng yêu cầu 1 × 2.5 L/s khi thể tích nhỏ hơn hoặc bằng 150 m³."::{tuple_delimiter}"nguy hiểm thấp, yêu cầu cơ bản"::{tuple_delimiter}7){record_delimiter}
+("relationship"::{tuple_delimiter}"Hạng D, E"::{tuple_delimiter}"150 m³"::{tuple_delimiter}"Khi thể tích lớn hơn 150 m³, Hạng D, E yêu cầu 2 × 2.5 L/s."::{tuple_delimiter}"yêu cầu tăng cường, lưu lượng nước"::{tuple_delimiter}7){record_delimiter}
 #############################""",
 ]
 
