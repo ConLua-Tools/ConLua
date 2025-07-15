@@ -163,6 +163,9 @@ async def upload_file(file: UploadFile = File(...)):
     file_content = await file.read()
     file_size = len(file_content)
 
+    lightrag_instance = MyLightRAG()
+    await lightrag_instance.createKG(file_content)
+
     return FileUploadResponse(
         filename=file.filename,
         size=file_size,
