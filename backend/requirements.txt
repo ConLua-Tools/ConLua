@@ -22,3 +22,4 @@ numpy
 python-dotenv
 python-docx
 email-validator
+python-multipart
