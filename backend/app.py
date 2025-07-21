@@ -14,6 +14,7 @@ from lib.cloudflareWorker import CloudflareWorker
 from lib.pydantic_filters import UserRegister, UserLogin, QuestionRequest, CustomAIRequest, QuestionResponse, FileUploadResponse
 from lib.SimpleKnowledgeStore import SimpleKnowledgeStore
 from lib.lightrag_extensions import MyLightRAG
+from lib.backRetrieval import backRetrieval
 
 load_dotenv(dotenv_path=Path(__file__).parent / '.env')
 # Configuration
@@ -59,6 +60,7 @@ async def initialize_system():
         cloudflare_api_key=CLOUDFLARE_API_KEY,
         api_base_url=API_BASE_URL,
         llm_model_name=LLM_MODEL,
+        embedding_model_name=EMBEDDING_MODEL,
     )
 
     # Initialize fire safety knowledge store (from existing dickens data)
@@ -121,18 +123,44 @@ Please provide a helpful answer based on the context about fire safety regulatio
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 
+@app.post("/view_source", response_model=QuestionResponse)
+async def view_source(request: QuestionRequest):
+    cloudflare_worker = CloudflareWorker(
+        cloudflare_api_key=CLOUDFLARE_API_KEY,
+        api_base_url=API_BASE_URL,
+        llm_model_name=LLM_MODEL,
+    )
+    back_retrieval = backRetrieval(keyword_generator=lambda user_prompt: cloudflare_worker.query(user_prompt))
+    back_retrieval.load_regulations()
+
+from docx import Document
+
 @app.post("/upload_doc", response_model=FileUploadResponse)
 async def upload_file(file: UploadFile = File(...)):
+    # Read DOCX file content
     file_content = await file.read()
-    file_size = len(file_content)
 
+    # Save temporarily to read with python-docx
+    temp_path = "/tmp/uploaded.docx"
+    with open(temp_path, "wb") as temp_file:
+        temp_file.write(file_content)
+
+    # Convert DOCX to plain text
+    doc = Document(temp_path)
+    paragraphs = [para.text.strip() for para in doc.paragraphs if para.text.strip()]
+    plain_text = "\n".join(paragraphs)
+
+    # Optional: Remove the temporary file if needed
+    # os.remove(temp_path)
+
+    # Proceed with plain text
     lightrag_instance = MyLightRAG()
-    await lightrag_instance.createKG(file_content)
+    await lightrag_instance.createKG(plain_text)
 
     return FileUploadResponse(
         filename=file.filename,
-        size=file_size,
-        message="File uploaded successfully."
+        size=len(file_content),
+        message="DOCX converted to text and processed successfully."
     )
 
 @app.get("/modes")
