@@ -5,9 +5,9 @@ import logging
 import logging.config
 
 from backend.lib.cloudflareWorker import CloudflareWorker
-from backend.lib.lightrag import QueryParam, LightRAG
-from backend.lib.lightrag.kg.shared_storage import initialize_pipeline_status
-from backend.lib.lightrag.utils import logger, set_verbose_debug, EmbeddingFunc
+from lightrag import QueryParam, LightRAG
+from lightrag.kg.shared_storage import initialize_pipeline_status
+from lightrag.utils import logger, set_verbose_debug, EmbeddingFunc
 
 # Configuration
 load_dotenv(dotenv_path=Path(__file__).resolve().parents[1] / '.env')
