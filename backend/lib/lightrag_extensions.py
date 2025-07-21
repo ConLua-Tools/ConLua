@@ -5,9 +5,9 @@ import logging
 import logging.config
 
 from backend.lib.cloudflareWorker import CloudflareWorker
-from lightrag import QueryParam, LightRAG
-from lightrag.kg.shared_storage import initialize_pipeline_status
-from lightrag.utils import logger, set_verbose_debug, EmbeddingFunc
+from backend.lib.lightrag import QueryParam, LightRAG
+from backend.lib.lightrag.kg.shared_storage import initialize_pipeline_status
+from backend.lib.lightrag.utils import logger, set_verbose_debug, EmbeddingFunc
 
 # Configuration
 load_dotenv(dotenv_path=Path(__file__).resolve().parents[1] / '.env')
@@ -94,7 +94,6 @@ class MyLightRAG:
         )
         print("Initializing LightRAG Class\n=======")
         self.rag = LightRAG(
-            working_dir=WORKING_DIR,
             max_parallel_insert=2,
             llm_model_func=self.cloudflare_worker.query,
             llm_model_name=LLM_MODEL,
