@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 ConLua: LightRAG & CloudflareAPI based Vietnamese fire safety regulation Retrieval-Augmented Generation
+# 🚀 ConLua: Vietnamese fire safety regulation Retrieval-Augmented Generation using LightRAG & CloudflareAPI
 </div>
 
 ## Current functionalities
