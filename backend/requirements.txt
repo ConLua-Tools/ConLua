@@ -20,3 +20,4 @@ urllib3==2.5.0
 uvicorn[standard]==0.24.0
 numpy
 python-dotenv
+python-docx
