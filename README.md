@@ -23,6 +23,17 @@
 ### Frontend deployment
 Currently, the front end is only a simple HTML, so feel free to deploy it anyway that you would like. Example website currently uses Vercel
 
+### Program flow chart
+#### Querying
+- Ideally: User query contains a query and a base document selection. Endpoint processed by `app.py`. Input filtered through `pedantic_filters.py`, `lightrag_extensions.py` generates query for the graphml database via `cloudflareWorker.py`. Data retrieved then sent to LLM model via `cloudflareWorker.py`. LLM model then returns the result query
+
+- Currently: Fucntions similarly to ideally, but instead of true knowledge graph retrieval the knowledge graph is treated as knowledge chunks instead. `simpleKnowledgeStore.py` searches for similar keywords (entities or relationship) and returns that knowledge chunk to be fed into the LLM model. Saves cost.
+
+#### Graph knowledge creation
+User uploads a base document, that document is then processed by `app.py` and converted into a `.txt` file. Then `lightrag_extensions.py` would perform and transform it into a graphml knowledge graph file (using a variety of embedding and querying operations via `cloudflareWorker.py`).
+
+The current implementation is fine, since grpahml is indeed a knowledge graph file store. But for data organization, querying, and display, other formats might be better.
+
 ### Quickstart
 If you want to visualize how LightRAG works, and specifically how you can use Cloudflare worker API to interact with it, refer to [this link](https://github.com/HKUDS/LightRAG/blob/main/examples/unofficial-sample/lightrag_cloudflare_demo.py)
 
